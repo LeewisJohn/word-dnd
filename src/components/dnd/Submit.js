@@ -25,8 +25,8 @@ export default function Buttons({
 
     const updatedBlanks = Object.entries(items).reduce((acc, [key, value]) => {
       const isBlankCorrect = key !== WORD_BANK && value.items.some((item) => value.solutions.includes(item));
-      acc[key] = { ...value, isCorrect: isBlankCorrect || null };
-      if (!isBlankCorrect && key !== WORD_BANK) correct = false;
+      acc[key] = { ...value, isCorrect: isBlankCorrect };
+      if (!isBlankCorrect && key !== WORD_BANK) correct = isBlankCorrect;
       return acc;
     }, {});
 
@@ -56,7 +56,7 @@ export default function Buttons({
           ref={submitButtonRef}
         />
 
-        {(attemptCount > 0) && (
+        {((attemptCount > 0) || isCorrect) && (
           <ResetButton onClick={handleReset} />
         )}
 
@@ -149,5 +149,5 @@ FeedbackMessage.propTypes = {
   isCorrect: PropTypes.bool.isRequired,
   successMessage: PropTypes.string.isRequired,
   failureMessage: PropTypes.string.isRequired,
-  isShowSolution: PropTypes.number
+  isShowSolution: PropTypes.bool
 };
